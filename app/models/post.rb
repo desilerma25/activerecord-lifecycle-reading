@@ -1,7 +1,12 @@
 class Post < ActiveRecord::Base
 
   belongs_to :author
-  validate :is_title_case 
+  validate :is_title_case #checks if title is title case (calls to private method below)
+
+  before_validation :make_title_case # will make title case BEFORE validation occurs (calls to private method below)
+  # using before_save will run this AFTER validation occurs
+
+  before_save :email_author_about_post # will call to private method below to send email to author RE post being successfully saved
 
   private
 
@@ -13,5 +18,8 @@ class Post < ActiveRecord::Base
 
   def make_title_case
     self.title = self.title.titlecase
+  end
+
+  def email_author_about_post
   end
 end
